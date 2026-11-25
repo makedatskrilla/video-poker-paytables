@@ -1,0 +1,17 @@
+rank,hold,share_of_deals_pct,average_ev_when_used,share_where_list_is_optimal_pct
+1,"Four of a kind, straight flush, royal flush",0.0255,31.0241,100.00
+2,4 to a royal flush,0.0360,18.7042,100.00
+3,"Three of a kind, straight, flush, full house",2.8371,4.6135,100.00
+4,4 to a straight flush,0.1958,2.6259,100.00
+5,Two pair,4.7539,2.5957,100.00
+6,High pair (jacks or better),12.9846,1.5365,100.00
+7,3 to a royal flush,1.0911,1.3960,96.95
+8,4 to a flush,3.2902,1.2170,100.00
+9,Low pair (twos to tens),28.2187,0.8237,99.97
+10,4 to an outside straight,2.2717,0.7203,100.00
+11,2 suited high cards,6.8247,0.5853,93.62
+12,3 to a straight flush,2.5284,0.5174,77.05
+13,"2 unsuited high cards (if more than 2, the lowest 2)",15.5458,0.4858,92.58
+14,"Suited 10 with a jack, queen or king",1.1409,0.4845,95.14
+15,One high card,15.0097,0.4742,100.00
+16,Discard everything,3.2459,0.3598,100.00

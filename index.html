@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jacks or Better 9/6 vs 8/5: Video Poker Paytables and Hold Chart</title>
+  <meta name="description" content="Exact Jacks or Better returns for the 9/6 and 8/5 paytables, hand frequencies, a ranked hold chart and the cost of 21 common hold mistakes. Open data and Python code.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://makedatskrilla.github.io/video-poker-paytables/">
+  <style>
+:root {
+  --bg: #f3efe6;
+  --paper: #fbf8f1;
+  --ink: #1e1a14;
+  --muted: #5b564c;
+  --line: #d7d0c2;
+  --accent: #1f4a43;
+  --link: #1a4d6e;
+  --th: #ece6d8;
+  --band: #e7f0ed;
+}
+* { box-sizing: border-box; }
+html { font-size: 18px; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.55;
+}
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--accent); }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 1.25rem 4rem; }
+header.hero {
+  padding: 2.4rem 0 1.4rem;
+  border-bottom: 1px solid var(--line);
+}
+p.kicker {
+  margin: 0 0 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+h1, h2, h3 {
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ink);
+}
+h1 { font-size: clamp(2rem, 4vw, 2.8rem); margin: 0 0 0.6rem; }
+h2 { font-size: 1.6rem; margin: 2.4rem 0 0.8rem; }
+h3 { font-size: 1.2rem; margin: 1.6rem 0 0.5rem; }
+.lede { font-size: 1.08rem; max-width: 42rem; margin: 0 0 1rem; }
+.meta {
+  display: flex; flex-wrap: wrap; gap: 0.5rem 1rem;
+  color: var(--muted); font-size: 0.9rem; margin: 0;
+}
+.meta a { color: inherit; }
+nav.toc {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 1rem 1.2rem;
+  margin: 1.6rem 0 0;
+}
+nav.toc h2 { margin: 0 0 0.5rem; font-size: 1.05rem; }
+nav.toc ol { margin: 0; padding-left: 1.2rem; }
+nav.toc li { margin: 0.2rem 0; }
+section p { max-width: 42.5rem; }
+.note, .callout {
+  max-width: 42.5rem;
+  border-left: 3px solid var(--accent);
+  padding: 0.2rem 0 0.2rem 1rem;
+  margin: 1rem 0 1.2rem;
+  color: var(--ink);
+}
+.table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0 1.4rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 0.92rem; }
+caption {
+  text-align: left; font-weight: 600; padding: 0.8rem 0.9rem 0.4rem;
+  font-family: Georgia, "Times New Roman", serif; font-size: 1rem;
+  caption-side: top;
+}
+th, td { padding: 0.55rem 0.8rem; border-top: 1px solid var(--line); vertical-align: top; text-align: left; }
+thead th { background: var(--th); border-top: 0; font-size: 0.8rem; letter-spacing: 0.02em; text-transform: uppercase; }
+tbody th { font-weight: 600; min-width: 16rem; }
+.game { display: block; }
+.variant { display: block; font-weight: 400; color: var(--muted); font-size: 0.86rem; padding-top: 0.15rem; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: nowrap; }
+tbody tr:nth-child(even) { background: #f3eee4; }
+.sources { list-style: none; padding: 0; }
+.sources li { margin: 0 0 0.7rem; max-width: 45rem; padding-left: 1.6rem; position: relative; }
+.sources li span.n { position: absolute; left: 0; color: var(--muted); font-variant-numeric: tabular-nums; }
+footer {
+  margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: 0.9rem;
+}
+footer p { max-width: 42.5rem; }
+code, .file { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.88em; }
+@media (max-width: 640px) {
+  html { font-size: 17px; }
+  .wrap { padding: 0 0.9rem 3rem; }
+  table { font-size: 0.86rem; }
+  tbody th { min-width: 14rem; }
+}
+@media print {
+  body { background: #fff; }
+  a { color: inherit; text-decoration: none; }
+  nav.toc { break-after: avoid; }
+  .table-wrap { border: 1px solid #ccc; }
+}
+.cards { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: nowrap; }
+.red { color: #a3312a; }
+
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="kicker">Open data project</p>
+      <h1>Jacks or Better 9/6 vs 8/5: what the paytable costs</h1>
+      <p class="lede">Two Jacks or Better machines can look the same and still pay back very different amounts. This page has the exact return for the 9/6 and 8/5 paytables, how often each hand lands, a ranked hold chart and a price tag on 21 common holding mistakes. Everything is computed by a short Python script that goes through all 2,598,960 deals and all 32 ways to hold each one, and the results are checked against published tables.</p>
+      <p class="meta"><span>Last computed 25 November 2026</span><a href="data/paytable-returns.csv">paytable-returns.csv</a><a href="data/hand-frequencies.csv">hand-frequencies.csv</a><a href="data/hold-strategy-9-6.csv">hold-strategy-9-6.csv</a><a href="data/hold-mistakes.csv">hold-mistakes.csv</a><a href="https://github.com/makedatskrilla/video-poker-paytables">Source on GitHub</a></p>
+      <nav class="toc">
+        <h2>Contents</h2>
+        <ol>
+          <li><a href="#paytables">The paytables</a></li>
+          <li><a href="#returns">Return with the best play</a></li>
+          <li><a href="#frequencies">How often each hand lands</a></li>
+          <li><a href="#chart">Hold chart for 9/6</a></li>
+          <li><a href="#mistakes">What each hold mistake costs</a></li>
+          <li><a href="#method">Method and checks</a></li>
+          <li><a href="#sources">Sources and related data</a></li>
+        </ol>
+      </nav>
+    </header>
+
+    <section id="paytables">
+      <h2>The paytables</h2>
+      <p>Pays are per unit bet with maximum coins. A royal flush pays 4,000 coins for 5, which is 800 per unit. The names 9/6 and 8/5 come from the full house and flush lines, the only two that differ. Everything else is the same: one 52 card deck, five cards dealt, one draw, and a pair of jacks or better is the lowest paying hand.</p>
+      <div class="table-wrap">
+        <table>
+          <caption>Jacks or Better pays per 1 unit bet</caption>
+          <thead><tr><th scope="col">Hand</th><th scope="col" class="num">9/6</th><th scope="col" class="num">8/5</th><th scope="col" class="num">Duel tier 0</th></tr></thead>
+          <tbody>
+<tr><th scope="row">Royal flush</th><td class="num">800</td><td class="num">800</td><td class="num">812.97</td></tr>
+<tr><th scope="row">Straight flush</th><td class="num">50</td><td class="num">50</td><td class="num">58</td></tr>
+<tr><th scope="row">Four of a kind</th><td class="num">25</td><td class="num">25</td><td class="num">26</td></tr>
+<tr><th scope="row">Full house</th><td class="num">9</td><td class="num">8</td><td class="num">9</td></tr>
+<tr><th scope="row">Flush</th><td class="num">6</td><td class="num">5</td><td class="num">6</td></tr>
+<tr><th scope="row">Straight</th><td class="num">4</td><td class="num">4</td><td class="num">4</td></tr>
+<tr><th scope="row">Three of a kind</th><td class="num">3</td><td class="num">3</td><td class="num">3</td></tr>
+<tr><th scope="row">Two pair</th><td class="num">2</td><td class="num">2</td><td class="num">2</td></tr>
+<tr><th scope="row">Jacks or better</th><td class="num">1</td><td class="num">1</td><td class="num">1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The third column is the Jacks or Better paytable that the crypto casino Duel publishes for its own video poker game, for bets up to $1,182.85. It is here as a data point because it is an unusual table with a stated optimal return. The pays come from the game info panel on duel.com, and the exact royal flush multiplier of 812.9719437907615 is taken from the config file captured from duel.com in the ProvablyFair.org audit repo. Above that bet size the casino scales the table down, which is not modelled here.</p>
+    </section>
+
+    <section id="returns">
+      <h2>Return with the best play</h2>
+      <p>Return is what comes back per unit wagered when every deal is held the best possible way. Loss per 1,000 is in units over 1,000 units wagered.</p>
+      <div class="table-wrap">
+        <table>
+          <caption>Exact long-run return</caption>
+          <thead><tr><th scope="col">Paytable and strategy</th><th scope="col" class="num">Return</th><th scope="col" class="num">House edge</th><th scope="col" class="num">Loss per 1,000</th><th scope="col" class="num">Published</th></tr></thead>
+          <tbody>
+<tr><th scope="row">9/6, best play</th><td class="num">99.5439%</td><td class="num">0.4561%</td><td class="num">4.56</td><td class="num">99.5439%</td></tr>
+<tr><th scope="row">8/5, best play</th><td class="num">97.2984%</td><td class="num">2.7016%</td><td class="num">27.02</td><td class="num">97.2984%</td></tr>
+<tr><th scope="row">Duel tier 0, best play</th><td class="num">99.9000%</td><td class="num">0.1000%</td><td class="num">1.00</td><td class="num">99.90%</td></tr>
+<tr><th scope="row">8/5 played with the 9/6 strategy</th><td class="num">97.2912%</td><td class="num">2.7088%</td><td class="num">27.09</td><td class="num"></td></tr>
+<tr><th scope="row">9/6 played with the 16 line list below</th><td class="num">99.4593%</td><td class="num">0.5407%</td><td class="num">5.41</td><td class="num">99.46%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note"><strong>9/6 against 8/5 is 22.45 units per 1,000 wagered.</strong> The 9/6 machine keeps 4.56 units of every 1,000 played and the 8/5 machine keeps 27.02. That gap of 2.2455 points comes from two pay lines. With 9/6 play a full house or a flush lands on 2.25% of hands, and each pays one unit less on 8/5.</p>
+      <p class="note"><strong>Learning the 8/5 strategy is worth very little.</strong> Playing an 8/5 machine with the 9/6 strategy returns 97.2912%, only 0.0072 points below the best 8/5 play. Picking the machine matters far more than the small strategy changes between the two tables.</p>
+      <p class="note"><strong>The Duel table checks out.</strong> The casino states 99.90% for optimal play on its tier 0 table. The calculator gets 99.9000% for the same pays, with the strategy re-solved for that table. The higher straight flush and four of a kind pays do most of the work. The royal adds 12.97 units over 800.</p>
+    </section>
+
+    <section id="frequencies">
+      <h2>How often each hand lands</h2>
+      <p>Chance of each final hand with the best play for that paytable, and how many points of the return each hand supplies. The Duel tier 0 mix is in <a href="data/hand-frequencies.csv">hand-frequencies.csv</a>.</p>
+      <div class="table-wrap">
+        <table>
+          <caption>Final hand mix with the best play</caption>
+          <thead><tr><th scope="col">Final hand</th><th scope="col" class="num">9/6 chance</th><th scope="col" class="num">9/6 return points</th><th scope="col" class="num">8/5 chance</th><th scope="col" class="num">8/5 return points</th></tr></thead>
+          <tbody>
+<tr><th scope="row">Royal flush</th><td class="num">0.0025%</td><td class="num">1.9807</td><td class="num">0.0025%</td><td class="num">1.9915</td></tr>
+<tr><th scope="row">Straight flush</th><td class="num">0.0109%</td><td class="num">0.5465</td><td class="num">0.0108%</td><td class="num">0.5383</td></tr>
+<tr><th scope="row">Four of a kind</th><td class="num">0.2363%</td><td class="num">5.9064</td><td class="num">0.2363%</td><td class="num">5.9072</td></tr>
+<tr><th scope="row">Full house</th><td class="num">1.1512%</td><td class="num">10.3610</td><td class="num">1.1514%</td><td class="num">9.2109</td></tr>
+<tr><th scope="row">Flush</th><td class="num">1.1015%</td><td class="num">6.6087</td><td class="num">1.0902%</td><td class="num">5.4508</td></tr>
+<tr><th scope="row">Straight</th><td class="num">1.1229%</td><td class="num">4.4917</td><td class="num">1.1235%</td><td class="num">4.4940</td></tr>
+<tr><th scope="row">Three of a kind</th><td class="num">7.4449%</td><td class="num">22.3346</td><td class="num">7.4463%</td><td class="num">22.3388</td></tr>
+<tr><th scope="row">Two pair</th><td class="num">12.9279%</td><td class="num">25.8558</td><td class="num">12.9298%</td><td class="num">25.8597</td></tr>
+<tr><th scope="row">Jacks or better</th><td class="num">21.4585%</td><td class="num">21.4585</td><td class="num">21.5071%</td><td class="num">21.5071</td></tr>
+<tr><th scope="row">Nothing</th><td class="num">54.5435%</td><td class="num">0.0000</td><td class="num">54.5022%</td><td class="num">0.0000</td></tr>
+<tr><th scope="row">Total</th><td class="num">100%</td><td class="num">99.5439</td><td class="num">100%</td><td class="num">97.2984</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>A royal flush comes about once every 40,391 hands on 9/6 and supplies only 1.98 points of the return. Two pair, three of a kind and the jacks or better pair do the heavy lifting with close to 70 points between them. More than half of all hands end with nothing.</p>
+    </section>
+
+    <section id="chart">
+      <h2>Hold chart for 9/6</h2>
+      <p>Look up every way to play the deal and keep the one highest on the list. A high card is a jack, queen, king or ace. This is the simple 16 line list that Wizard of Odds publishes for 9/6. The calculator scores it exactly at 99.4593%, which matches the published 99.46% and sits 0.0846 points under perfect play.</p>
+      <div class="table-wrap">
+        <table>
+          <caption>Simple hold list, 9/6 Jacks or Better</caption>
+          <thead><tr><th scope="col">Hold, best first</th><th scope="col" class="num">Share of deals</th><th scope="col" class="num">Average value</th><th scope="col" class="num">Matches best play</th></tr></thead>
+          <tbody>
+<tr><th scope="row">1. Four of a kind, straight flush, royal flush</th><td class="num">0.03%</td><td class="num">31.0241</td><td class="num">100.00%</td></tr>
+<tr><th scope="row">2. 4 to a royal flush</th><td class="num">0.04%</td><td class="num">18.7042</td><td class="num">100.00%</td></tr>
+<tr><th scope="row">3. Three of a kind, straight, flush, full house</th><td class="num">2.84%</td><td class="num">4.6135</td><td class="num">100.00%</td></tr>
+<tr><th scope="row">4. 4 to a straight flush</th><td class="num">0.20%</td><td class="num">2.6259</td><td class="num">100.00%</td></tr>
+<tr><th scope="row">5. Two pair</th><td class="num">4.75%</td><td class="num">2.5957</td><td class="num">100.00%</td></tr>
+<tr><th scope="row">6. High pair (jacks or better)</th><td class="num">12.98%</td><td class="num">1.5365</td><td class="num">100.00%</td></tr>
+<tr><th scope="row">7. 3 to a royal flush</th><td class="num">1.09%</td><td class="num">1.3960</td><td class="num">96.95%</td></tr>
+<tr><th scope="row">8. 4 to a flush</th><td class="num">3.29%</td><td class="num">1.2170</td><td class="num">100.00%</td></tr>
+<tr><th scope="row">9. Low pair (twos to tens)</th><td class="num">28.22%</td><td class="num">0.8237</td><td class="num">99.97%</td></tr>
+<tr><th scope="row">10. 4 to an outside straight</th><td class="num">2.27%</td><td class="num">0.7203</td><td class="num">100.00%</td></tr>
+<tr><th scope="row">11. 2 suited high cards</th><td class="num">6.82%</td><td class="num">0.5853</td><td class="num">93.62%</td></tr>
+<tr><th scope="row">12. 3 to a straight flush</th><td class="num">2.53%</td><td class="num">0.5174</td><td class="num">77.05%</td></tr>
+<tr><th scope="row">13. 2 unsuited high cards (if more than 2, the lowest 2)</th><td class="num">15.55%</td><td class="num">0.4858</td><td class="num">92.58%</td></tr>
+<tr><th scope="row">14. Suited 10 with a jack, queen or king</th><td class="num">1.14%</td><td class="num">0.4845</td><td class="num">95.14%</td></tr>
+<tr><th scope="row">15. One high card</th><td class="num">15.01%</td><td class="num">0.4742</td><td class="num">100.00%</td></tr>
+<tr><th scope="row">16. Discard everything</th><td class="num">3.25%</td><td class="num">0.3598</td><td class="num">100.00%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Share of deals is how often each line ends up being the hold. Average value is the expected return per unit bet when it is. The last column is the share of those deals where the list picks the exact best hold. Where it misses, the cost is small. The weakest line is 3 to a straight flush, which is the best hold on 77.05% of the deals where the list uses it. A longer guide to which cards to hold, with worked hands, is <a href="https://whyduel.com/blog/video-poker-strategy-duel-casino">here</a>.</p>
+    </section>
+
+    <section id="mistakes">
+      <h2>What each hold mistake costs</h2>
+      <p>Cost is the drop in expected value from the wrong hold against the best one, in percent of the bet, for that one deal. The right hold is the same on both paytables for every deal listed.</p>
+      <div class="table-wrap">
+        <table>
+          <caption>21 common mistakes, most expensive on 9/6 first</caption>
+          <thead><tr><th scope="col">Mistake</th><th scope="col">Deal</th><th scope="col">Right hold</th><th scope="col">Wrong hold</th><th scope="col" class="num">Cost 9/6</th><th scope="col" class="num">Cost 8/5</th></tr></thead>
+          <tbody>
+<tr><th scope="row">Keeping a high pair instead of 4 to a royal</th><td><span class="cards"><span>K♠</span> <span class="red">K♥</span> <span class="red">Q♥</span> <span class="red">J♥</span> <span class="red">A♥</span></span></td><td><span class="cards"><span class="red">K♥</span> <span class="red">Q♥</span> <span class="red">J♥</span> <span class="red">A♥</span></span></td><td><span class="cards"><span>K♠</span> <span class="red">K♥</span></span></td><td class="num">1699.54%</td><td class="num">1683.53%</td></tr>
+<tr><th scope="row">Keeping a pat flush instead of 4 to a royal</th><td><span class="cards"><span class="red">10♥</span> <span class="red">J♥</span> <span class="red">Q♥</span> <span class="red">K♥</span> <span class="red">4♥</span></span></td><td><span class="cards"><span class="red">10♥</span> <span class="red">J♥</span> <span class="red">Q♥</span> <span class="red">K♥</span></span></td><td><span class="cards"><span class="red">10♥</span> <span class="red">J♥</span> <span class="red">Q♥</span> <span class="red">K♥</span> <span class="red">4♥</span></span></td><td class="num">1355.32%</td><td class="num">1442.55%</td></tr>
+<tr><th scope="row">Standing on two pair</th><td><span class="cards"><span>4♣</span> <span class="red">4♦</span> <span>9♠</span> <span class="red">9♥</span> <span>K♣</span></span></td><td><span class="cards"><span>4♣</span> <span class="red">4♦</span> <span>9♠</span> <span class="red">9♥</span></span></td><td><span class="cards"><span>4♣</span> <span class="red">4♦</span> <span>9♠</span> <span class="red">9♥</span> <span>K♣</span></span></td><td class="num">59.57%</td><td class="num">51.06%</td></tr>
+<tr><th scope="row">Keeping a kicker with three of a kind</th><td><span class="cards"><span>7♠</span> <span class="red">7♥</span> <span class="red">7♦</span> <span>K♣</span> <span>2♠</span></span></td><td><span class="cards"><span>7♠</span> <span class="red">7♥</span> <span class="red">7♦</span></span></td><td><span class="cards"><span>7♠</span> <span class="red">7♥</span> <span class="red">7♦</span> <span>K♣</span></span></td><td class="num">45.14%</td><td class="num">45.42%</td></tr>
+<tr><th scope="row">Keeping a low pair instead of 4 to a flush</th><td><span class="cards"><span class="red">6♥</span> <span>6♠</span> <span class="red">2♥</span> <span class="red">9♥</span> <span class="red">K♥</span></span></td><td><span class="cards"><span class="red">6♥</span> <span class="red">2♥</span> <span class="red">9♥</span> <span class="red">K♥</span></span></td><td><span class="cards"><span class="red">6♥</span> <span>6♠</span></span></td><td class="num">38.91%</td><td class="num">20.78%</td></tr>
+<tr><th scope="row">Breaking a high pair for 4 to a flush</th><td><span class="cards"><span class="red">Q♥</span> <span>Q♠</span> <span class="red">3♥</span> <span class="red">7♥</span> <span class="red">9♥</span></span></td><td><span class="cards"><span class="red">Q♥</span> <span>Q♠</span></span></td><td><span class="cards"><span class="red">Q♥</span> <span class="red">3♥</span> <span class="red">7♥</span> <span class="red">9♥</span></span></td><td class="num">34.51%</td><td class="num">52.64%</td></tr>
+<tr><th scope="row">Keeping only the jack from 4 to an outside straight</th><td><span class="cards"><span class="red">J♥</span> <span class="red">10♦</span> <span>9♣</span> <span>8♠</span> <span class="red">2♥</span></span></td><td><span class="cards"><span class="red">J♥</span> <span class="red">10♦</span> <span>9♣</span> <span>8♠</span></span></td><td><span class="cards"><span class="red">J♥</span></span></td><td class="num">27.09%</td><td class="num">27.44%</td></tr>
+<tr><th scope="row">Keeping 2 suited high cards instead of 3 to a straight flush</th><td><span class="cards"><span class="red">9♥</span> <span class="red">10♥</span> <span class="red">J♥</span> <span>4♣</span> <span>2♠</span></span></td><td><span class="cards"><span class="red">9♥</span> <span class="red">10♥</span> <span class="red">J♥</span></span></td><td><span class="cards"><span class="red">10♥</span> <span class="red">J♥</span></span></td><td class="num">25.60%</td><td class="num">22.56%</td></tr>
+<tr><th scope="row">Keeping 4 to a flush instead of 3 to a royal</th><td><span class="cards"><span>10♠</span> <span>J♠</span> <span>Q♠</span> <span>3♠</span> <span class="red">8♥</span></span></td><td><span class="cards"><span>10♠</span> <span>J♠</span> <span>Q♠</span></span></td><td><span class="cards"><span>10♠</span> <span>J♠</span> <span>Q♠</span> <span>3♠</span></span></td><td class="num">18.78%</td><td class="num">34.88%</td></tr>
+<tr><th scope="row">Keeping one high card instead of a suited queen and jack</th><td><span class="cards"><span class="red">Q♥</span> <span class="red">J♥</span> <span>8♣</span> <span class="red">5♦</span> <span>2♠</span></span></td><td><span class="cards"><span class="red">Q♥</span> <span class="red">J♥</span></span></td><td><span class="cards"><span class="red">J♥</span></span></td><td class="num">15.95%</td><td class="num">15.19%</td></tr>
+<tr><th scope="row">Keeping a kicker with a low pair</th><td><span class="cards"><span>6♠</span> <span class="red">6♥</span> <span class="red">A♦</span> <span>9♣</span> <span>2♠</span></span></td><td><span class="cards"><span>6♠</span> <span class="red">6♥</span></span></td><td><span class="cards"><span>6♠</span> <span class="red">6♥</span> <span class="red">A♦</span></span></td><td class="num">14.84%</td><td class="num">14.65%</td></tr>
+<tr><th scope="row">Keeping 4 to an outside straight instead of a low pair</th><td><span class="cards"><span>5♠</span> <span class="red">6♥</span> <span class="red">7♦</span> <span>8♣</span> <span>8♠</span></span></td><td><span class="cards"><span>8♣</span> <span>8♠</span></span></td><td><span class="cards"><span>5♠</span> <span class="red">6♥</span> <span class="red">7♦</span> <span>8♣</span></span></td><td class="num">14.28%</td><td class="num">13.27%</td></tr>
+<tr><th scope="row">Throwing away a lone high card</th><td><span class="cards"><span>K♣</span> <span class="red">8♦</span> <span class="red">6♥</span> <span>4♠</span> <span>2♣</span></span></td><td><span class="cards"><span>K♣</span></span></td><td>Discard all</td><td class="num">13.04%</td><td class="num">13.02%</td></tr>
+<tr><th scope="row">Keeping a kicker with a high pair</th><td><span class="cards"><span>J♠</span> <span class="red">J♥</span> <span class="red">A♦</span> <span>7♣</span> <span>3♠</span></span></td><td><span class="cards"><span>J♠</span> <span class="red">J♥</span></span></td><td><span class="cards"><span>J♠</span> <span class="red">J♥</span> <span class="red">A♦</span></span></td><td class="num">12.03%</td><td class="num">11.84%</td></tr>
+<tr><th scope="row">Keeping K Q J instead of unsuited A K Q J</th><td><span class="cards"><span class="red">A♦</span> <span>K♠</span> <span class="red">Q♥</span> <span>J♣</span> <span>7♠</span></span></td><td><span class="cards"><span class="red">A♦</span> <span>K♠</span> <span class="red">Q♥</span> <span>J♣</span></span></td><td><span class="cards"><span>K♠</span> <span class="red">Q♥</span> <span>J♣</span></span></td><td class="num">9.81%</td><td class="num">9.81%</td></tr>
+<tr><th scope="row">Keeping an unsuited 10 with a jack</th><td><span class="cards"><span class="red">10♦</span> <span>J♣</span> <span>8♠</span> <span class="red">5♥</span> <span class="red">2♦</span></span></td><td><span class="cards"><span>J♣</span></span></td><td><span class="cards"><span class="red">10♦</span> <span>J♣</span></span></td><td class="num">9.17%</td><td class="num">8.85%</td></tr>
+<tr><th scope="row">Keeping a lone ace instead of an unsuited queen and jack</th><td><span class="cards"><span class="red">A♥</span> <span class="red">Q♦</span> <span>J♣</span> <span class="red">9♥</span> <span>3♠</span></span></td><td><span class="cards"><span class="red">Q♦</span> <span>J♣</span></span></td><td><span class="cards"><span class="red">A♥</span></span></td><td class="num">4.61%</td><td class="num">4.84%</td></tr>
+<tr><th scope="row">Keeping all three unsuited high cards with an ace</th><td><span class="cards"><span>A♣</span> <span class="red">K♦</span> <span class="red">Q♥</span> <span>9♠</span> <span>3♣</span></span></td><td><span class="cards"><span class="red">K♦</span> <span class="red">Q♥</span></span></td><td><span class="cards"><span>A♣</span> <span class="red">K♦</span> <span class="red">Q♥</span></span></td><td class="num">2.34%</td><td class="num">2.23%</td></tr>
+<tr><th scope="row">Keeping 3 to a flush with a high card</th><td><span class="cards"><span>K♠</span> <span>7♠</span> <span>3♠</span> <span class="red">9♥</span> <span class="red">2♦</span></span></td><td><span class="cards"><span>K♠</span></span></td><td><span class="cards"><span>K♠</span> <span>7♠</span> <span>3♠</span></span></td><td class="num">2.01%</td><td class="num">5.90%</td></tr>
+<tr><th scope="row">Drawing to a low inside straight instead of discarding all</th><td><span class="cards"><span>5♠</span> <span class="red">6♥</span> <span class="red">8♦</span> <span>9♣</span> <span>2♠</span></span></td><td>Discard all</td><td><span class="cards"><span>5♠</span> <span class="red">6♥</span> <span class="red">8♦</span> <span>9♣</span></span></td><td class="num">1.89%</td><td class="num">1.57%</td></tr>
+<tr><th scope="row">Keeping 4 to an inside straight instead of two high cards</th><td><span class="cards"><span>9♠</span> <span class="red">10♥</span> <span class="red">Q♦</span> <span>K♣</span> <span>3♠</span></span></td><td><span class="cards"><span class="red">Q♦</span> <span>K♣</span></span></td><td><span class="cards"><span>9♠</span> <span class="red">10♥</span> <span class="red">Q♦</span> <span>K♣</span></span></td><td class="num">1.51%</td><td class="num">1.40%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note"><strong>Never keep a made hand over 4 to a royal.</strong> Holding a pair of kings instead of four cards to the royal gives up 1699.54% of the bet. Even a pat flush should be broken, at a cost of 1355.32% if you keep it.</p>
+      <p class="note"><strong>Kickers are a habit, not a strategy.</strong> An ace kept next to a pair of jacks costs 12.03%. Standing on two pair instead of drawing one card costs 59.57%.</p>
+      <p class="note"><strong>The paytable changes the price of a mistake.</strong> Breaking a pair of queens for 4 to a flush costs 34.51% on 9/6 and 52.64% on 8/5, because the flush pays less. A low pair against 4 to a flush goes the other way. The flush draw is right on both, but the gap shrinks from 38.91% to 20.78%.</p>
+      <p class="note"><strong>Some arguments are close.</strong> Keeping 4 to an inside straight with two high cards instead of just the high cards costs 1.51%. Drawing five new cards beats a low inside straight draw by 1.89%.</p>
+    </section>
+
+    <section id="method">
+      <h2>Method and checks</h2>
+      <p><strong>Computation.</strong> The script in <a href="https://github.com/makedatskrilla/video-poker-paytables/tree/main/code"><span class="file">code/</span></a> goes through all 2,598,960 five card hands once and records, for every set of zero to five cards, how many final hands of each rank contain that set. For any deal and hold, inclusion and exclusion over the discarded cards then gives the exact number of ways to make each hand on the draw. Deals that differ only by swapping suits play the same, so 134,459 distinct deals are solved and weighted by how often they occur. All sums use whole numbers over a shared denominator, so nothing is rounded until the CSV is written. Run <code>python code/build_data.py</code> to rebuild every file. It needs Python 3 and nothing else, and takes about a minute with roughly 500 MB of memory.</p>
+      <p><strong>Check against published tables.</strong> The returns match Wizard of Odds to every published digit, 0.99543904 for 9/6 and 0.97298434 for 8/5. The combination counts in <a href="data/hand-frequencies.csv">hand-frequencies.csv</a> match the Wizard of Odds counts exactly for every hand on both tables, for example 493,512,264 royal flushes out of 19,933,230,517,200 on 9/6.</p>
+      <p><strong>Hold list check.</strong> The 16 line list is coded in <span class="file">code/strategy.py</span> and scored over every deal. When two holds fall on the same line, the one with the higher exact value is used. The result, 99.4593%, matches the 99.46% Wizard of Odds gives for the list.</p>
+      <p><strong>Limits.</strong> These are long-run averages for a single hand game with a fair shuffle. They say nothing about one session, and they are not advice to play.</p>
+    </section>
+
+    <section id="sources">
+      <h2>Sources and related data</h2>
+      <ol class="sources">
+        <li><span class="n">1.</span> Wizard of Odds, <a href="https://wizardofodds.com/games/video-poker/tables/jacks-or-better/">Jacks or Better</a>. Returns and combination counts for 9/6, 8/5 and other paytables, used as the main cross-check.</li>
+        <li><span class="n">2.</span> Wizard of Odds, <a href="https://wizardofodds.com/games/video-poker/strategy/jacks-or-better/9-6/simple/">Jacks or Better simple strategy</a>. The 16 line hold list and its stated 99.46% return.</li>
+        <li><span class="n">3.</span> duel.com, video poker game info. Jacks or Better pays 813, 58, 26, 9, 6, 4, 3, 2 and 1 with a stated 99.90% optimal return.</li>
+        <li><span class="n">4.</span> ProvablyFair.org, <a href="https://github.com/ProvablyFair-org/duel-video-poker">duel-video-poker audit repo</a>. The file videoPokerConfig.json holds the tier 0 multipliers captured from duel.com.</li>
+        <li><span class="n">5.</span> Kaggle dataset, <a href="https://www.kaggle.com/datasets/makedatskrilla/video-poker-paytables-and-hold-strategy">Video Poker Paytables and Hold Strategy</a>. The same CSV files.</li>
+        <li><span class="n">6.</span> Kaggle notebook, <a href="https://www.kaggle.com/code/makedatskrilla/video-poker-9-6-vs-8-5-what-the-paytable-costs">Video Poker 9/6 vs 8/5: What the Paytable Costs</a>. Charts built from the dataset.</li>
+        <li><span class="n">7.</span> <a href="https://makedatskrilla.github.io/house-edge-index/">House Edge Index</a>. Sourced house edge and RTP figures for blackjack, roulette, video poker, slots and more.</li>
+        <li><span class="n">8.</span> <a href="https://makedatskrilla.github.io/blackjack-strategy-cost/">Blackjack Strategy Cost</a>. Computed blackjack strategy charts and what each mistake costs.</li>
+      </ol>
+    </section>
+
+    <footer>
+      <p>This is an independent data project. It is not affiliated with, endorsed by or operated by any casino. The figures describe long-run expected value under the stated paytables.</p>
+      <p>Data, code and page text are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International</a>. Please credit "Video Poker Paytables" and link back to this page when you reuse the tables.</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://makedatskrilla.github.io/video-poker-paytables/sitemap.xml

@@ -1,0 +1,22 @@
+mistake,deal,right_hold,wrong_hold,ev_right_9_6,ev_wrong_9_6,cost_pct_of_bet_9_6,ev_right_8_5,ev_wrong_8_5,cost_pct_of_bet_8_5
+Keeping a high pair instead of 4 to a royal,Ks Kh Qh Jh Ah,Kh Qh Jh Ah,Ks Kh,18.5319,1.5365,1699.54,18.3617,1.5264,1683.53
+Keeping a pat flush instead of 4 to a royal,Th Jh Qh Kh 4h,Th Jh Qh Kh,Th Jh Qh Kh 4h,19.5532,6.0000,1355.32,19.4255,5.0000,1442.55
+Standing on two pair,4c 4d 9s 9h Kc,4c 4d 9s 9h,4c 4d 9s 9h Kc,2.5957,2.0000,59.57,2.5106,2.0000,51.06
+Keeping a kicker with three of a kind,7s 7h 7d Kc 2s,7s 7h 7d,7s 7h 7d Kc,4.3025,3.8511,45.14,4.2414,3.7872,45.42
+Keeping a low pair instead of 4 to a flush,6h 6s 2h 9h Kh,6h 2h 9h Kh,6h 6s,1.2128,0.8237,38.91,1.0213,0.8135,20.78
+Breaking a high pair for 4 to a flush,Qh Qs 3h 7h 9h,Qh Qs,Qh 3h 7h 9h,1.5365,1.1915,34.51,1.5264,1.0000,52.64
+Keeping only the jack from 4 to an outside straight,Jh Td 9c 8s 2h,Jh Td 9c 8s,Jh,0.7447,0.4737,27.09,0.7447,0.4703,27.44
+Keeping 2 suited high cards instead of 3 to a straight flush,9h Th Jh 4c 2s,9h Th Jh,Th Jh,0.7354,0.4794,25.60,0.6966,0.4710,22.56
+Keeping 4 to a flush instead of 3 to a royal,Ts Js Qs 3s 8h,Ts Js Qs,Ts Js Qs 3s,1.4644,1.2766,18.78,1.4339,1.0851,34.88
+Keeping one high card instead of a suited queen and jack,Qh Jh 8c 5d 2s,Qh Jh,Jh,0.6206,0.4610,15.95,0.6095,0.4576,15.19
+Keeping a kicker with a low pair,6s 6h Ad 9c 2s,6s 6h,6s 6h Ad,0.8237,0.6753,14.84,0.8135,0.6670,14.65
+Keeping 4 to an outside straight instead of a low pair,5s 6h 7d 8c 8s,8c 8s,5s 6h 7d 8c,0.8237,0.6809,14.28,0.8135,0.6809,13.27
+Throwing away a lone high card,Kc 8d 6h 4s 2c,Kc,Discard all,0.4724,0.3420,13.04,0.4689,0.3388,13.02
+Keeping a kicker with a high pair,Js Jh Ad 7c 3s,Js Jh,Js Jh Ad,1.5365,1.4163,12.03,1.5264,1.4080,11.84
+Keeping K Q J instead of unsuited A K Q J,Ad Ks Qh Jc 7s,Ad Ks Qh Jc,Ks Qh Jc,0.5957,0.4977,9.81,0.5957,0.4977,9.81
+Keeping an unsuited 10 with a jack,Td Jc 8s 5h 2d,Jc,Td Jc,0.4820,0.3903,9.17,0.4776,0.3891,8.85
+Keeping a lone ace instead of an unsuited queen and jack,Ah Qd Jc 9h 3s,Qd Jc,Ah,0.4913,0.4453,4.61,0.4902,0.4418,4.84
+Keeping all three unsuited high cards with an ace,Ac Kd Qh 9s 3c,Kd Qh,Ac Kd Qh,0.4795,0.4561,2.34,0.4784,0.4561,2.23
+Keeping 3 to a flush with a high card,Ks 7s 3s 9h 2d,Ks,Ks 7s 3s,0.4669,0.4468,2.01,0.4641,0.4052,5.90
+Drawing to a low inside straight instead of discarding all,5s 6h 8d 9c 2s,Discard all,5s 6h 8d 9c,0.3593,0.3404,1.89,0.3561,0.3404,1.57
+Keeping 4 to an inside straight instead of two high cards,9s Th Qd Kc 3s,Qd Kc,9s Th Qd Kc,0.4832,0.4681,1.51,0.4821,0.4681,1.40

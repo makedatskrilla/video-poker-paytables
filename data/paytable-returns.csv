@@ -1,0 +1,6 @@
+paytable,royal_flush,straight_flush,four_of_a_kind,full_house,flush,optimal_return_pct,house_edge_pct,expected_loss_per_1000_units,published_return_pct,published_by
+9/6,800,50,25,9,6,99.543904,0.456096,4.561,99.5439,Wizard of Odds
+8/5,800,50,25,8,5,97.298434,2.701566,27.016,97.2984,Wizard of Odds
+Duel tier 0,812.9719437907615,58,26,9,6,99.900000,0.100000,1.000,99.90,"duel.com game info, ProvablyFair.org"
+8/5 played with the 9/6 strategy,800,50,25,8,5,97.291233,2.708767,27.088,,
+9/6 simple 16 line list,800,50,25,9,6,99.459261,0.540739,5.407,99.46,Wizard of Odds
